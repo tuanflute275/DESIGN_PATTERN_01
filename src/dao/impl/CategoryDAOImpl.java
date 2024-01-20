@@ -6,16 +6,22 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import dao.GenericDAO;
+import dao.GeneralDAO;
 import db.JDBCUtil;
 import entities.Category;
 
-public class CategoryDAOImpl implements GenericDAO<Category> {
+public class CategoryDAOImpl implements GeneralDAO<Category> {
 
 	private List<Category> data;
+	
+	private static CategoryDAOImpl instance; 
+	
+	private CategoryDAOImpl() {}
 
 	public static CategoryDAOImpl getInstance() {
-		return new CategoryDAOImpl();
+		if(instance == null) 
+			instance = new CategoryDAOImpl();
+		return instance;
 	}
 
 	Connection conn = null;

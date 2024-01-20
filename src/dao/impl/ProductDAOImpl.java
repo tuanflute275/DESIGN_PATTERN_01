@@ -6,17 +6,21 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import dao.GenericDAO;
+import dao.GeneralDAO;
 import db.JDBCUtil;
 import entities.Category;
 import entities.Product;
 
-public class ProductDAOImpl implements GenericDAO<Product>{
-	
+public class ProductDAOImpl implements GeneralDAO<Product> {
+
 	private List<Product> data;
 
+	private static ProductDAOImpl instance;
+
 	public static ProductDAOImpl getInstance() {
-		return new ProductDAOImpl();
+		if (instance == null)
+			instance = new ProductDAOImpl();
+		return instance;
 	}
 
 	Connection conn = null;
@@ -32,7 +36,7 @@ public class ProductDAOImpl implements GenericDAO<Product>{
 			ps = conn.prepareStatement(sql);
 			rs = ps.executeQuery();
 			while (rs.next()) {
-				data.add(new Product(rs.getInt(1), rs.getString(2), rs.getDouble(3),rs.getInt(4), rs.getBoolean(3)));
+				data.add(new Product(rs.getInt(1), rs.getString(2), rs.getDouble(3), rs.getInt(4), rs.getBoolean(3)));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -50,7 +54,7 @@ public class ProductDAOImpl implements GenericDAO<Product>{
 			ps.setString(1, "%" + name + "%");
 			rs = ps.executeQuery();
 			while (rs.next()) {
-				data.add(new Product(rs.getInt(1), rs.getString(2), rs.getDouble(3),rs.getInt(4), rs.getBoolean(3)));
+				data.add(new Product(rs.getInt(1), rs.getString(2), rs.getDouble(3), rs.getInt(4), rs.getBoolean(3)));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -66,8 +70,8 @@ public class ProductDAOImpl implements GenericDAO<Product>{
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, id);
 			rs = ps.executeQuery();
-			while(rs.next()) {
-				return new Product(rs.getInt(1), rs.getString(2), rs.getDouble(3),rs.getInt(4), rs.getBoolean(3));
+			while (rs.next()) {
+				return new Product(rs.getInt(1), rs.getString(2), rs.getDouble(3), rs.getInt(4), rs.getBoolean(3));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -87,9 +91,9 @@ public class ProductDAOImpl implements GenericDAO<Product>{
 			ps.setDouble(3, entity.getPrice());
 			ps.setInt(4, entity.getCategoryId());
 			ps.setBoolean(5, entity.isStatus());
-			
+
 			int i = ps.executeUpdate();
-			if(i > 0)
+			if (i > 0)
 				kq = true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -109,9 +113,9 @@ public class ProductDAOImpl implements GenericDAO<Product>{
 			ps.setInt(3, entity.getCategoryId());
 			ps.setBoolean(4, entity.isStatus());
 			ps.setInt(5, entity.getId());
-			
+
 			int i = ps.executeUpdate();
-			if(i > 0)
+			if (i > 0)
 				kq = true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -128,12 +132,12 @@ public class ProductDAOImpl implements GenericDAO<Product>{
 			ps = conn.prepareStatement(sql);
 			ps.setInt(1, entity.getId());
 			int i = ps.executeUpdate();
-			if(i > 0)
+			if (i > 0)
 				kq = true;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return kq;
 	}
 

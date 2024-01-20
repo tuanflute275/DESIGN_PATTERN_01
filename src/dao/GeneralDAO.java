@@ -2,7 +2,7 @@ package dao;
 
 import java.util.List;
 
-public interface GenericDAO<T> {
+public interface GeneralDAO<T> {
 	public List<T> get();
 	public List<T> getByName(String name);
 	public T findId(Integer id);
